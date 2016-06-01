@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.http import HttpRequest
 from django.template import RequestContext
 from datetime import datetime
+from app import models
 
 def home(request):
     """Renders the home page."""
@@ -39,6 +40,7 @@ def analysisPlotting(request):
         'app/analysisplotting.html',
         {
             'title':'Analysis and Plotting',
+            'resources':models.timeXloss(),
             'year':datetime.now().year,
         }
     )

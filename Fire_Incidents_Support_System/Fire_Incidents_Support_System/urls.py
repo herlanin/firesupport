@@ -3,7 +3,7 @@ Definition of urls for Fire_Incidents_Support_System.
 """
 
 from datetime import datetime
-from django.conf.urls import url, include, include
+from django.conf.urls import url, include
 import django.contrib.auth.views
 
 import app.forms
