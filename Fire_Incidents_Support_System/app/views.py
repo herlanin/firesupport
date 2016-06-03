@@ -45,7 +45,6 @@ def delayVS(request):
             'title':'Delay VS. X',
             'loss':x['loss'],
             'victims':x['victims'],
-            'neighborhood':x['neighborhood'],
             'year':datetime.now().year,
         }
     )

@@ -197,7 +197,7 @@ class Incident:
     @staticmethod
     def returnIncidents():
         i=Incident()
-        d={'loss':i.timeXloss(),'victims':i.timeXVictims(),'neighborhood':i.neighborhoodxfireincident()}
+        d={'loss':i.timeXloss(),'victims':i.timeXVictims()}
         return d
 
 
