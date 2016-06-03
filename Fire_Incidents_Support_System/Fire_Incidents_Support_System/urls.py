@@ -16,10 +16,11 @@ from django.contrib import admin
 # admin.autodiscover()
 
 urlpatterns = [
-    # Examples:
     url(r'^$', app.views.home, name='home'),
     url(r'^mapdata', app.views.mapdata, name='mapdata'),
-    url(r'^analysisPlotting', app.views.analysisPlotting, name='analysisPlotting'),
+    url(r'^delayVS', app.views.delayVS, name='delayVS'),
+    url(r'^neighborhood_bar', app.views.neighborhood_bar, name='neighborhood_bar'),
+    url(r'^neighborhood_pie', app.views.neighborhood_pie, name='neighborhood_pie'),
     url(r'^contact$', app.views.contact, name='contact'),
     url(r'^about', app.views.about, name='about'),
     url(r'^login/$',

@@ -6,6 +6,19 @@ from django.db import models
 import simplejson
 import urllib2
 import requests
+from datetime import datetime
+import time
+import random
+
+def diff_times_in_seconds(t1, t2):
+    # caveat emptor - assumes t1 & t2 are python times, on the same day and t2 is after t1
+    t1 = time.strptime(t1, '%H:%M:%S')
+    t2 = time.strptime(t2, '%H:%M:%S')
+    h1, m1, s1 = t1.tm_hour, t1.tm_min, t1.tm_sec
+    h2, m2, s2 = t2.tm_hour, t2.tm_min, t2.tm_sec
+    t1_secs = s1 + 60 * (m1 + 60*h1)
+    t2_secs = s2 + 60 * (m2 + 60*h2)
+    return( t2_secs - t1_secs)
 #Columns
  #incident_number text Incident Number
  #exposure_number number Exposure Number
@@ -75,130 +88,127 @@ import requests
  #location_zip text Location (zip)
  #location_state text Location (state)
 
-class Incident:
-    def __init__(self,incident_number,incident_date,alarm_dttm,arrival_dttm,close_dttm,fire_fatalities,fire_injuries,civilian_fatalities,civilian_injuries,latitude,longitude, neighborhood_district):
-        self.incident_number=incident_number
-        self.address=address
-        self.incident_date=incident_date
-        self.alarm_dttm=alarm_dttm
-        self.arrival_dttm=arrival_dttm
-        self.close_dttm=close_dttm
-        self.fire_fatalities=fire_fatalities
-        self.fire_injuries=fire_injuries
-        self.civilian_fatalities=civilian_fatalities
-        self.civilian_injuries=civilian_injuries
-        self.latitude=latitude
-        self.longitude=longitude
-        self.neighborhood_district=neighborhood_district
-    def printattr(self):
-        print(self.incident_number+'-'+self.address+'-'+self.incident_date+'-'+self.alarm_dttm+'-'+self.arrival_dttm+'-'+self.close_dtt+'-'+self.fire_fatalities+'-'+self.fire_injuries+'-')
-
-
-class Incident:
-    def __init__(self,incident_number,incident_date,alarm_dttm,arrival_dttm,close_dttm,fire_fatalities,fire_injuries,civilian_fatalities,civilian_injuries,latitude,longitude, neighborhood_district):
-        self.incident_number=incident_number
-        self.incident_date=incident_date
-        self.alarm_dttm=alarm_dttm
-        self.arrival_dttm=arrival_dttm
-        self.close_dttm=close_dttm
-        self.fire_fatalities=fire_fatalities
-        self.fire_injuries=fire_injuries
-        self.civilian_fatalities=civilian_fatalities
-        self.civilian_injuries=civilian_injuries
-        self.latitude=latitude
-        self.longitude=longitude
-        self.neighborhood_district=neighborhood_district
-        self.estimated_contents_loss=estimated_contents_loss
-        self.estimated_property_loss=estimated_property_loss
-    #def printattr(self):
-    #    print(self.incident_number+'-'+self.address+'-'+self.incident_date+'-'+self.alarm_dttm+'-'+self.arrival_dttm+'-'+self.close_dtt+'-'+self.fire_fatalities+'-'+self.fire_injuries+'-')
+    #--------------------------GET TOTAL---------------------------------------
 def total():
     totalurl='https://data.sfgov.org/resource/6h2p-rdar.json?$select=count(incident_number)'
     totalj=requests.get(totalurl).json()
     total=int(totalj[0].get('count_incident_number'))
     return total
-def timeXloss():
-    total=total()
-    x=0
-    while x<=total:
-        print('part '+str(x//50000)+ ' of ' + parts)
-        req='https://data.sfgov.org/resource/6h2p-rdar.json?$select=incident_number,alarm_dttm,arrival_dttm,estimated_contents_loss,estimated_property_loss&$limit=50000&$offset='+str(x)
-        j=requests.get(req).json()
-        for item in j:
-          dataList.append(Incident(str(item.get('incident_number')),str(item.get('incident_date')),str(item.get('alarm_dttm')),str(item.get('arrival_dttm')),str(item.get('close_dttm')),str(item.get('fire_fatalities')),str(item.get('fire_injuries')),str(item.get('civilian_fatalities')),str(item.get('civilian_injuries')),str(item.get('sub_col_location_latitude')),str(item.get('sub_col_location_longitude')),str(item.get('neighborhood_district'))))
-        x+=50000
-
+__TOTAL__=total()
+#--------------------------GET RESOURCES---------------------------------------
 def getResources():
-    total=total()
+    total=__TOTAL__
     x=0
     dataList=[]
     print('charging data...')
     parts=str(total//50000)
-    while x<=total:
+    j=[]
+    while x<total:
         print('part '+str(x//50000)+ ' of ' + parts)
-        req='https://data.sfgov.org/resource/6h2p-rdar.json?$select=incident_number,incident_date,alarm_dttm,arrival_dttm,close_dttm,fire_fatalities,fire_injuries,civilian_fatalities,civilian_injuries,location.latitude,location.longitude,neighborhood_district&$limit=50000&$offset='+str(x)
-        j=requests.get(req).json()
-        for item in j:
-          dataList.append(Incident(str(item.get('incident_number')),str(item.get('incident_date')),str(item.get('alarm_dttm')),str(item.get('arrival_dttm')),str(item.get('close_dttm')),str(item.get('fire_fatalities')),str(item.get('fire_injuries')),str(item.get('civilian_fatalities')),str(item.get('civilian_injuries')),str(item.get('sub_col_location_latitude')),str(item.get('sub_col_location_longitude')),str(item.get('neighborhood_district'))))
+        req='https://data.sfgov.org/resource/6h2p-rdar.json?$select=estimated_contents_loss,estimated_property_loss,alarm_dttm,arrival_dttm,fire_fatalities,fire_injuries,civilian_fatalities,civilian_injuries,neighborhood_district&$limit=50000&$offset='+str(x)
+        js=requests.get(req).json()
+        j.append(js)
         x+=50000
     print('Charged '+str(total)+' registers!')
-    return dataList
+    return j
 
 
-from datetime import datetime
-import time
-def diff_times_in_seconds(t1, t2):
-    # caveat emptor - assumes t1 & t2 are python times, on the same day and t2 is after t1
-    t1 = time.strptime(t1, '%H:%M:%S')
-    t2 = time.strptime(t2, '%H:%M:%S')
-    h1, m1, s1 = t1.tm_hour, t1.tm_min, t1.tm_sec
-    h2, m2, s2 = t2.tm_hour, t2.tm_min, t2.tm_sec
-    t1_secs = s1 + 60 * (m1 + 60*h1)
-    t2_secs = s2 + 60 * (m2 + 60*h2)
-    return( t2_secs - t1_secs)
-
-def timeXloss():
-    totalurl='https://data.sfgov.org/resource/6h2p-rdar.json?$select=count(incident_number)'
-    totalj=requests.get(totalurl).json()
-    total=int(totalj[0].get('count_incident_number'))
-    dataList=[]
-    x=0
-    parts=str(total//50000)
-    while x<=total-1:
-        print('part '+str(x//50000)+ ' of ' + parts)
-        req='https://data.sfgov.org/resource/6h2p-rdar.json?$select=alarm_dttm,arrival_dttm,estimated_contents_loss,estimated_property_loss&$limit=50000&$offset='+str(x)
-        j=[]
-        j.append(requests.get(req).json())
-        x+=50000
-
-    response=""
-    count=0
-    for x in j[0]:
-       if len(str(x.get('alarm_dttm')).split('T'))>1:
-        if len(str(x.get('arrival_dttm')).split('T'))>1:
-           t= diff_times_in_seconds(str(x.get('alarm_dttm')).split('T')[1], str(x.get('arrival_dttm')).split('T')[1])
-       else:
-           t=0
-       c=0
-       p=0
-       if(x.get('estimated_contents_loss')==None):
-           pass
-       if(x.get('estimated_property_loss')==None):
-           pass
-       if(x.get('estimated_contents_loss')>=0):
-            c=int(x.get('estimated_contents_loss'))
-       if(x.get('estimated_property_loss')>=0):
-           p=int(x.get('estimated_property_loss'))
-       l=p+c
-       if t>0:    
-        response+='['+str(abs(t))+','+str(abs(l))+']'
+class Incident:
+    def __init__(self):
+        self.resources=getResources()
+    def timeXloss(self):
+        j=self.resources
+        response1=""
+        
+        for x in range(len(j)):
+            count=0
+            for y in j[x]:
+               if len(str(y.get('alarm_dttm')).split('T'))>1:
+                if len(str(y.get('arrival_dttm')).split('T'))>1:
+                   t= diff_times_in_seconds(str(y.get('alarm_dttm')).split('T')[1], str(y.get('arrival_dttm')).split('T')[1])
+               else:
+                   t=0
+               c=0
+               p=0
+               if(y.get('estimated_contents_loss')==None):
+                   pass
+               if(y.get('estimated_property_loss')==None):
+                   pass
+               if(y.get('estimated_contents_loss')>=0):
+                    c=int(y.get('estimated_contents_loss'))
+               if(y.get('estimated_property_loss')>=0):
+                   p=int(y.get('estimated_property_loss'))
+               l=p+c
+               if t>0:    
+                response1+='['+str(abs(t))+','+str(abs(l))+']'
        
-        if(count+1<len(j[0])): 
-         response+=','
-       count=count+1
+                if(count<=len(j[x])): 
+                 response1+=','
+                count=count+1
+        s=''
+        response1.split(']')[len(response1.split(']'))-1]=s
+        return response1
 
+
+    
+        
+    def timeXVictims(self):
+        j=self.resources
+        response2=""
+        
+        for x in range(len(j)):
+            count=0
+            for y in j[x]:
+               if len(str(y.get('alarm_dttm')).split('T'))>1:
+                if len(str(y.get('arrival_dttm')).split('T'))>1:
+                   t= diff_times_in_seconds(str(y.get('alarm_dttm')).split('T')[1], str(y.get('arrival_dttm')).split('T')[1])
+               else:
+                   t=0
+               ff=0
+               fi=0
+               cf=0
+               ci=0
+               if(y.get('fire_fatalities')==None):
+                   pass
+               if(y.get('fire_injuries')==None):
+                   pass
+               if(y.get('civilian_fatalities')==None):
+                   pass
+               if(y.get('civilian_injuries')==None):
+                   pass
+               if(y.get('fire_fatalities')>=0):
+                    ff=int(y.get('fire_fatalities'))
+               if(y.get('fire_injuries')>=0):
+                    fi=int(y.get('fire_injuries'))
+               if(y.get('civilian_fatalities')>=0):
+                    cf=int(y.get('civilian_fatalities'))
+               if(y.get('civilian_injuries')>=0):
+                   ci=int(y.get('civilian_injuries'))
+               v=ff+fi+cf+ci
+               if t>0:    
+                response2+='['+str(abs(t))+','+str(abs(v))+']'
+       
+                if(count<len(j[x])): 
+                 response2+=','
+               count=count+1
+
+        del(response2.split(']')[len(response2.split(']'))-1])
+        return response2
+    @staticmethod
+    def returnIncidents():
+        i=Incident()
+        d={'loss':i.timeXloss(),'victims':i.timeXVictims(),'neighborhood':i.neighborhoodxfireincident()}
+        return d
+
+
+def neighborhoodxfireincident():
+    response='["Neighborhood District", "Number of incidents", { role: "style" } ],'    
+    req='https://data.sfgov.org/resource/6h2p-rdar.json?$select=neighborhood_district,COUNT(incident_number)&$group=neighborhood_district'
+    js=requests.get(req).json()
+    for x in range(len(js)-2):
+        response+='["'+str(js[x].get('neighborhood_district'))+'",'+str(js[x].get('count_incident_number'))+',"'+str("#%06x" % random.randint(0, 0xFFFFFF))+'"],'
+    response+='["'+str(js[len(js)-1].get('neighborhood_district'))+'",'+str(js[len(js)-1].get('count_incident_number'))+',"'+str("#%06x" % random.randint(0, 0xFFFFFF))+'"]'
     return response
-
 
 
 

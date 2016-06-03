@@ -7,6 +7,7 @@ from django.http import HttpRequest
 from django.template import RequestContext
 from datetime import datetime
 from app import models
+from app.models import Incident
 
 def home(request):
     """Renders the home page."""
@@ -32,19 +33,45 @@ def mapdata(request):
         }
     )
 
-def analysisPlotting(request):
-    """Renders the analysisplotting page."""
+def delayVS(request):
+    """Renders the delayVS page."""
     assert isinstance(request, HttpRequest)
+    x=models.Incident.returnIncidents()
+
     return render(
         request,
-        'app/analysisplotting.html',
+        'app/delayVS.html',
         {
-            'title':'Analysis and Plotting',
-            'resources':models.timeXloss(),
+            'title':'Delay VS. X',
+            'loss':x['loss'],
+            'victims':x['victims'],
+            'neighborhood':x['neighborhood'],
             'year':datetime.now().year,
         }
     )
 
+def neighborhood_bar(request):
+    """Renders the neighborhood page."""
+    return render(
+        request,
+        'app/neighborhood_bar.html',
+        {
+            'title':'Incidents per neighborhood',
+            'neighborhood':models.neighborhoodxfireincident(),
+            'year':datetime.now().year,
+        }
+    )
+def neighborhood_pie(request):
+    """Renders the neighborhood page."""
+    return render(
+        request,
+        'app/neighborhood_pie.html',
+        {
+            'title':'Incidents per neighborhood',
+            'neighborhood':models.neighborhoodxfireincident(),
+            'year':datetime.now().year,
+        }
+    )
 def contact(request):
     """Renders the contact page."""
     assert isinstance(request, HttpRequest)

@@ -60,12 +60,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\static\app\images\fire-flames-clipart-black-and-white-black-lg-hi.png" />
-    <Content Include="app\templates\app\analysisPlotting.html" />
+    <Content Include="app\templates\app\delayVS.html" />
+    <Content Include="app\templates\app\delayXloss.html" />
+    <Content Include="app\templates\app\delayXvictims.html" />
     <Content Include="app\templates\app\mapdata.html" />
     <None Include="firesupport - Web Deploy.pubxml" />
     <None Include="firesupport - FTP.pubxml" />
     <None Include="firesupport - Web Deploy %282%29.pubxml" />
     <None Include="firesupport - FTP %282%29.pubxml" />
+    <Content Include="app\templates\app\neighborhood_bar.html" />
+    <Content Include="app\templates\app\neighborhood_pie.html" />
     <Content Include="requirements.txt" />
     <Content Include="db.sqlite3" />
     <Content Include="app\static\app\content\bootstrap.css" />

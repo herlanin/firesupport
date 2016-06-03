@@ -1,0 +1,52 @@
+﻿{% extends "app/layout.html" %}
+
+{% block content %}
+
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['scatter']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart () {
+
+
+       
+        var data2 = new google.visualization.DataTable();
+         data2.addColumn('number', 'Delay');
+         data2.addColumn('number', 'Loss');  
+
+
+
+        data2.addRows([{{loss}}]);
+
+
+
+         var options2 = {
+          width: 800,
+          height: 500,
+          colors: ['#800000'],
+          chart: {
+            title: 'Delay vs. Loss',
+            subtitle: 'based on delay = seconds'
+          },
+          hAxis: {title: 'Delay'},
+          vAxis: {title: 'Loss'}
+        };
+
+
+        var chart2 = new google.charts.Scatter(document.getElementById('loss'));
+
+
+        chart2.draw(data2, google.charts.Scatter.convertOptions(options2));
+      }
+      </script>
+<div id="loss" style="width: 900px; height: 500px;"></div>
+
+
+{% endblock %}
+
+
+    
+
+ 
