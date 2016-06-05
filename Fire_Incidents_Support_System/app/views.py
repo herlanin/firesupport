@@ -7,7 +7,9 @@ from django.http import HttpRequest
 from django.template import RequestContext
 from datetime import datetime
 from app import models
-from app.models import Incident
+from app.models import Resource
+
+resources=Resource.returnResources()
 
 def home(request):
     """Renders the home page."""
@@ -36,15 +38,12 @@ def mapdata(request):
 def delayVS(request):
     """Renders the delayVS page."""
     assert isinstance(request, HttpRequest)
-    x=models.Incident.returnIncidents()
-
     return render(
         request,
         'app/delayVS.html',
         {
             'title':'Delay VS. X',
-            'loss':x['loss'],
-            'victims':x['victims'],
+            'loss':resources['timeXloss'],
             'year':datetime.now().year,
         }
     )
@@ -56,7 +55,31 @@ def neighborhood_bar(request):
         'app/neighborhood_bar.html',
         {
             'title':'Incidents per neighborhood',
-            'neighborhood':models.neighborhoodxfireincident(),
+            'neighborhood':resources['neighborhoodxfireincident'],
+            'lossBar':resources['averageLossesNeighborhood'],
+            'year':datetime.now().year,
+        }
+    )
+
+def incidentsXlosses(request):
+    """Renders the incidentsXlosses page."""
+    return render(
+        request,
+        'app/incidentsXlosses.html',
+        {
+            'title':'Incidents X Losses',
+            'incidentsXlosses':resources['incidentsXLosses'],
+            'year':datetime.now().year,
+        }
+    )
+def normal(request):
+    """Renders the normal page."""
+    return render(
+        request,
+        'app/normal.html',
+        {
+            'title':'Incidents X Losses',
+            'normal':resources['normalLosses'],
             'year':datetime.now().year,
         }
     )
@@ -67,7 +90,8 @@ def neighborhood_pie(request):
         'app/neighborhood_pie.html',
         {
             'title':'Incidents per neighborhood',
-            'neighborhood':models.neighborhoodxfireincident(),
+            'neighborhood':resources['neighborhoodxfireincident'],
+            'lossPie':resources['averageLossesNeighborhood'],
             'year':datetime.now().year,
         }
     )

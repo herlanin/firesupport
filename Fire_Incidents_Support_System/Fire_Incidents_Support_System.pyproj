@@ -32,9 +32,6 @@
   <ItemGroup>
     <Compile Include="app\forms.py" />
     <Compile Include="app\models.py" />
-    <Compile Include="app\plot.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="app\tests.py" />
     <Compile Include="app\views.py" />
     <Compile Include="app\__init__.py" />
@@ -63,6 +60,8 @@
     <Content Include="app\templates\app\delayVS.html" />
     <Content Include="app\templates\app\delayXloss.html" />
     <Content Include="app\templates\app\delayXvictims.html" />
+    <Content Include="app\templates\app\description.html" />
+    <Content Include="app\templates\app\incidentsXlosses.html" />
     <Content Include="app\templates\app\mapdata.html" />
     <None Include="firesupport - Web Deploy.pubxml" />
     <None Include="firesupport - FTP.pubxml" />
@@ -70,6 +69,7 @@
     <None Include="firesupport - FTP %282%29.pubxml" />
     <Content Include="app\templates\app\neighborhood_bar.html" />
     <Content Include="app\templates\app\neighborhood_pie.html" />
+    <Content Include="app\templates\app\normal.html" />
     <Content Include="requirements.txt" />
     <Content Include="db.sqlite3" />
     <Content Include="app\static\app\content\bootstrap.css" />

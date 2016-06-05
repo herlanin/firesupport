@@ -9,6 +9,16 @@
         var data = google.visualization.arrayToDataTable([
 {{neighborhood|safe}}
         ]);
+        var dataPie = google.visualization.arrayToDataTable([
+{{lossPie|safe}}
+        ]);
+
+        var optionsPie = {
+          title: 'Average losses per neighborhood',
+          width: 1300,
+          height: 600,
+          is3D: true,
+        };
 
         var options = {
           title: 'Incidents per neighborhood',
@@ -19,9 +29,13 @@
 
         var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
         chart.draw(data, options);
+
+
+        var chartPie = new google.visualization.PieChart(document.getElementById('piechart_3d2'));
+        chartPie.draw(dataPie, optionsPie);
       }
     </script>
     <div id="piechart_3d" style="width: 85%; height: 85%;"></div>
-
+    <div id="piechart_3d2" style="width: 85%; height: 85%;"></div>
 
 {% endblock %}

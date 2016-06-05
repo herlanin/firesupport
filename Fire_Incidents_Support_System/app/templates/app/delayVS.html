@@ -5,59 +5,73 @@
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
-      google.charts.load('current', {'packages':['scatter']});
+      google.charts.load('current', {'packages':['scatter','corechart', 'line']});
       google.charts.setOnLoadCallback(drawChart);
 
       function drawChart () {
+       var dataLine = new google.visualization.DataTable();
+            dataLine.addColumn('number', 'Delay');
+            dataLine.addColumn('number', 'Loss');
 
-        var data = new google.visualization.DataTable();
-         data.addColumn('number', 'Delay');
-         data.addColumn('number', 'Victims');
-       
-        var data2 = new google.visualization.DataTable();
-         data2.addColumn('number', 'Delay');
-         data2.addColumn('number', 'Loss');  
+        var dataScatter = new google.visualization.DataTable();
+         dataScatter.addColumn('number', 'Delay');
+         dataScatter.addColumn('number', 'Loss');  
 
 
-        data.addRows([{{victims}}]);
-        data2.addRows([{{loss}}]);
 
-        var options = {
-          width: 800,
-          height: 500,
-          colors: ['#FF0000'],
-          chart: {
-            title: 'Delay vs. Victims',
-            subtitle: 'based on delay = seconds'
-          },
-          hAxis: {title: 'Delay'},
-          vAxis: {title: 'Victims'}
-        };
+        dataScatter.addRows([{{loss}}]);
+        dataLine.addRows([{{loss}}]);
 
-         var options2 = {
+
+
+                         var optionsScatter = {
           width: 800,
           height: 500,
           colors: ['#800000'],
           chart: {
             title: 'Delay vs. Loss',
-            subtitle: 'based on delay = seconds'
+            subtitle: 'based on delay = up to 1000 seconds and losses < 1.2M'
           },
-          hAxis: {title: 'Delay'},
-          vAxis: {title: 'Loss'}
+          hAxis: {title: 'Delay',minValue: 0},
+          vAxis: {title: 'Loss',minValue: 0}
         };
 
-        var chart = new google.charts.Scatter(document.getElementById('victims'));
-        var chart2 = new google.charts.Scatter(document.getElementById('loss'));
 
+        var scatter= new google.charts.Scatter(document.getElementById('scatter'));
+        scatter.draw(dataScatter, google.charts.Scatter.convertOptions(optionsScatter));
+
+
+
+               var optionsLine = {
+                hAxis: {
+                    title: 'Delay',
+                    logScale: true
+                },
+                vAxis: {
+                    title: 'Loss',
+                    logScale: false
+                },
+                colors: ['#a52714', '#097138']
+            };
+         var line = new google.visualization.LineChart(document.getElementById('line'));
         
 
-        chart.draw(data, google.charts.Scatter.convertOptions(options));
-        chart2.draw(data2, google.charts.Scatter.convertOptions(options2));
+
+        
+        line.draw(dataLine, optionsLine);            
+
+
+            
+
+
+
+           
+            
       }
       </script>
- <p><div id="victims" style="width:900px; height: 500px;"></div></p>
-  <p><div id="loss" style="width: 900px; height: 500px;"></div></p>
-   
+
+  <p><div id="scatter" style="width: 900px; height: 500px;"></div></p>
+  <p><div id="line" style="width: 900px; height: 500px;"></div></p> 
    
 
 

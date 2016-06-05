@@ -21,6 +21,8 @@ urlpatterns = [
     url(r'^delayVS', app.views.delayVS, name='delayVS'),
     url(r'^neighborhood_bar', app.views.neighborhood_bar, name='neighborhood_bar'),
     url(r'^neighborhood_pie', app.views.neighborhood_pie, name='neighborhood_pie'),
+    url(r'^incidentsXlosses', app.views.incidentsXlosses, name='incidentsXlosses'),
+    url(r'^normal', app.views.normal, name='normal'),
     url(r'^contact$', app.views.contact, name='contact'),
     url(r'^about', app.views.about, name='about'),
     url(r'^login/$',

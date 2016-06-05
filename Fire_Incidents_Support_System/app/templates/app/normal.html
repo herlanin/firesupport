@@ -1,0 +1,35 @@
+﻿{% extends "app/layout.html" %}
+
+{% block content %} 
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load("current", {packages:["corechart"]});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          {{normal|safe}}]);
+
+
+
+          var options4 = {
+    title: 'Distribution of fire incidents losses',
+    legend: { position: 'none' },
+    colors: ['#e7711c'],
+    histogram: { lastBucketPercentile: .5,
+         bucketSize: 20},
+    vAxis: { scaleType: 'mirrorLog' }
+  };
+ 
+       
+        var chart4 = new google.visualization.Histogram(document.getElementById('chart_div4'));
+        chart4.draw(data, options4);
+      
+      }
+    </script>
+
+    
+    <div id="chart_div4" style="width: 99.9%; height: 85%;"></div>
+    
+{% endblock %}
+
+

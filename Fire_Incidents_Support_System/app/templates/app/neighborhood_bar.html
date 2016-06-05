@@ -6,11 +6,24 @@
     google.charts.load("current", {packages:['corechart']});
     google.charts.setOnLoadCallback(drawChart);
     function drawChart() {
+
       var data = google.visualization.arrayToDataTable([
 {{neighborhood|safe}}
       ]);
 
+      var dataBar = google.visualization.arrayToDataTable([
+{{lossBar|safe}}
+      ]);
+
+
       var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1,
+                       { calc: "stringify",
+                         sourceColumn: 1,
+                         type: "string",
+                         role: "annotation" },
+                       2]);
+      var viewBar = new google.visualization.DataView(dataBar);
       view.setColumns([0, 1,
                        { calc: "stringify",
                          sourceColumn: 1,
@@ -21,19 +34,30 @@
       var options = {
         title: "Incidents per Neighborhood",
         width: 1300,
-        height: 600,
+        height: 550,
         bar: {groupWidth: "95%"},
         legend: { position: "none" },
       };
 
+     var optionsBar = {
+        title: "Average Losses per Neighborhood",
+        width: 1300,
+        height: 580,
+        bar: {groupWidth: "95%"},
+        legend: { position: "none" },
+      };
 
       var chart = new google.visualization.ColumnChart(document.getElementById("columnchart_values"));
       chart.draw(view, options);
 
+      var chartBar = new google.visualization.ColumnChart(document.getElementById("columnchart_values2"));
+      chartBar.draw(viewBar, optionsBar);
+
+
   }
   </script>
 <div id="columnchart_values" style="width: 85%; height: 85%;"></div>
-
+<div id="columnchart_values2" style="width: 85%; height: 85%;"></div>
 
 
 {% endblock %}
