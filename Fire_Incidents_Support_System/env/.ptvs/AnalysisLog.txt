@@ -16659,3 +16659,19 @@ System.IO.DirectoryNotFoundException: Could not find a part of the path 'C:\Fire
 2016-06-01T13:56:50: Saving group "C:\Fire_Incidents_Support_System\Fire_Incidents_Support_System\env\Lib\site-packages\pip"
 2016-06-01T13:56:52: End of group "C:\Fire_Incidents_Support_System\Fire_Incidents_Support_System\env\Lib\site-packages\pip"
 2016-06-01T13:56:52: Deleting 0 files
+
+2016-06-05T19:04:05: Start analysis
+2016-06-05T19:04:05: [WARNING] Library was set explicitly - skipping path detection
+2016-06-05T19:04:05: IncludeModulesFromModulePath = win32com
+2016-06-05T19:04:06: Deleting 1 files
+2016-06-05T19:04:06: Deleting "C:\Fire_Incidents_Support_System\Fire_Incidents_Support_System\env\.ptvs\bottle.idb"
+
+2016-06-05T19:04:10: Start analysis
+2016-06-05T19:04:10: [WARNING] Library was set explicitly - skipping path detection
+2016-06-05T19:04:11: IncludeModulesFromModulePath = win32com
+2016-06-05T19:04:11: Deleting 26 files
+
+2016-06-05T19:04:33: Start analysis
+2016-06-05T19:04:33: [WARNING] Library was set explicitly - skipping path detection
+2016-06-05T19:04:33: IncludeModulesFromModulePath = win32com
+2016-06-05T19:04:34: Deleting 34 files

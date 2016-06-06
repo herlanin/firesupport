@@ -1,8 +1,0 @@
-urlparse
-six
-os
-time
-http_client
-Stream
-_FakeSocket
-SSLError
