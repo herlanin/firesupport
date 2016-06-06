@@ -24,7 +24,7 @@ def home(request):
     )
 
 def mapdata(request):
-    """Renders the data page."""
+    """Renders the mapdata page."""
     assert isinstance(request, HttpRequest)
     return render(
         request,
@@ -49,7 +49,7 @@ def delayVS(request):
     )
 
 def neighborhood_bar(request):
-    """Renders the neighborhood page."""
+    """Renders the neighborhood_bar page."""
     return render(
         request,
         'app/neighborhood_bar.html',

@@ -9,9 +9,8 @@ import requests
 from datetime import datetime
 import time
 import random
-
+#---------------Calculate timestamp--------------------------
 def diff_times_in_seconds(t1, t2):
-    # caveat emptor - assumes t1 & t2 are python times, on the same day and t2 is after t1
     t1 = time.strptime(t1, '%H:%M:%S')
     t2 = time.strptime(t2, '%H:%M:%S')
     h1, m1, s1 = t1.tm_hour, t1.tm_min, t1.tm_sec
@@ -111,15 +110,18 @@ def getResources():
         x+=50000
     print('Charged '+str(total)+' registers!')
     return j
-
+#-------------------------CLASS iNCIDENT---------------------------------------
 class Inc:
     def __init__(self):
         self.time=0
         self.loss=0
+#--------------------------Class resources---------------------------------------
 class Resource:
+#--------------------------Constructor---------------------------------------
     def __init__(self):
         self.resources=getResources()
 
+#-----------------timeXloss() -> RETURNS STRING WITH DATA ABOUT DELAY AND LOSSES---------------------------------------
     def timeXloss(self):
         j=self.resources
         response=""
@@ -156,6 +158,9 @@ class Resource:
             response+='['+str(li[x].time)+','+str(li[x].loss)+'],'
         response+='['+str(li[len(li)-1].time)+','+str(li[len(li)-1].loss)+']'
         return response
+
+#-neighborhoodxfireincident()-> RETURNS STRING WITH DATA ABOUT FIRE INCIDENT PER NEIGHBORHOOD------
+
     def neighborhoodxfireincident(self):
         response='["Neighborhood District", "Number of incidents", { role: "style" } ],'    
         req='https://data.sfgov.org/resource/6h2p-rdar.json?$select=neighborhood_district,COUNT(incident_number)&$group=neighborhood_district&$order=neighborhood_district'
@@ -164,6 +169,8 @@ class Resource:
             response+='["'+str(js[x].get('neighborhood_district'))+'",'+str(js[x].get('count_incident_number'))+',"'+str("#%06x" % random.randint(0, 0xFFFFFF))+'"],'
         response+='["'+str(js[len(js)-1].get('neighborhood_district'))+'",'+str(js[len(js)-1].get('count_incident_number'))+',"'+str("#%06x" % random.randint(0, 0xFFFFFF))+'"]'
         return response
+
+#--averageLossesNeighborhood()-> RETURNS AVERAGE LOSS PER NEIGHBORHOOD----------------------------------------
 
     def averageLossesNeighborhood(self):
         response='["Neighborhood District", "AVG Losses", { role: "style" } ],'
@@ -178,9 +185,11 @@ class Resource:
         response+='["'+str(js[len(js)-1].get('neighborhood_district'))+'",'+str(round((float(js[len(js)-1].get('avgcloss'))+float(js2[len(js)-1].get('avgploss'))),2))+',"'+str("#%06x" % random.randint(0, 0xFFFFFF))+'"]'
         return response
 
+#------normalLosses()-> RETURNS STRING WITH DATA ABOUT ALL LOSSES ---------------------------------------
+
     def normalLosses(self):
    
-        req='https://data.sfgov.org/resource/6h2p-rdar.json?$select=incident_number,estimated_property_loss,estimated_contents_loss&$limit=50000&$order=estimated_property_loss*estimated_contents_loss'
+        req='https://data.sfgov.org/resource/6h2p-rdar.json?$select=incident_number,estimated_property_loss,estimated_contents_loss&$limit=50000'
         js=requests.get(req).json()
         response='["Incident Number", "Losses"],'
         for x in range(len(js)-2):
@@ -210,7 +219,7 @@ class Resource:
         response+='["'+str(js[len(js)-1].get('incident_number'))+'",'+str(l)+']'
         return response
 
-
+#---incidentsXLosses()-> RETURNS STRING WITH DATA ABOUT INCIDENTS * AVERAGE OF LOSSES PER NEIGHBORHOOD-------------
 
     def incidentsXLosses(self):
    
@@ -228,6 +237,9 @@ class Resource:
             response+='["'+str(js[x].get('neighborhood_district'))+'",'+str(round((float(js2[x].get('avgcloss'))+float(js3[x].get('avgploss')))*int(js[x].get('count_incident_number')),2))+',"'+str("#%06x" % random.randint(0, 0xFFFFFF))+'"],'
         response+='["'+str(js[len(js)-1].get('neighborhood_district'))+'",'+str(round((float(js2[len(js)-1].get('avgcloss'))+float(js3[len(js)-1].get('avgploss')))*int(js[len(js)-1].get('count_incident_number')),2))+',"'+str("#%06x" % random.randint(0, 0xFFFFFF))+'"]'
         return response
+
+    #---------returnResources()-> RETURNS DICTIONARY WITH ALL THE DATA TO THE VIEWS---------------------------------------
+    
     @staticmethod
     def returnResources():
         r=Resource()
