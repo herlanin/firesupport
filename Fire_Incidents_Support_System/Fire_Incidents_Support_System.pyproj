@@ -6,7 +6,7 @@
     <RootNamespace>Fire_Incidents_Support_System</RootNamespace>
     <InterpreterId>{6479b972-8d21-4dad-894d-7fa536d4f08e}</InterpreterId>
     <InterpreterVersion>2.7</InterpreterVersion>
-    <NameOfLastUsedPublishProfile>firesupport - Web Deploy (2)</NameOfLastUsedPublishProfile>
+    <NameOfLastUsedPublishProfile>firesupport - Web Deploy</NameOfLastUsedPublishProfile>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>

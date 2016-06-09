@@ -24,7 +24,7 @@ urlpatterns = [
     url(r'^incidentsXlosses', app.views.incidentsXlosses, name='incidentsXlosses'),
     url(r'^normal', app.views.normal, name='normal'),
     url(r'^contact$', app.views.contact, name='contact'),
-    url(r'^about', app.views.about, name='about'),
+    #url(r'^about', app.views.about, name='about'),
   ##  url(r'^login/$',
   #  #    django.contrib.auth.views.login,
   #      {
